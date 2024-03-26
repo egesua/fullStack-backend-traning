@@ -1,6 +1,7 @@
 package com.egesua.fsbackend.controller;
 
 import com.egesua.fsbackend.entity.User;
+import com.egesua.fsbackend.exception.UserNotFoundException;
 import com.egesua.fsbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,5 +22,11 @@ public class UserController {
     @GetMapping("/users")
     List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @GetMapping("/user/{id}")
+    User getUserById(@PathVariable Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
     }
 }
